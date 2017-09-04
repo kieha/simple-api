@@ -15,10 +15,34 @@ module.exports = {
           res.status(400).send({ error: err.message });
         }
       } else {
-        res.status(200).send({
+        res.status(201).send({
           message: "Journal entry saved successfully",
           journal,
         });
+      }
+    });
+  },
+
+  all: (req, res) => {
+    Journal.find({}, (err, entries) => {
+      if (err) {
+        res.status(400).send({ error: "Error fetching journal entries", err });
+      } else if (entries.length === 0) {
+        res.status(404).send({ message: "No journal entries to retrieve" });
+      } else {
+        res.status(200).send(entries);
+      }
+    });
+  },
+
+  delete: (req, res) => {
+    Journal.remove({}, (err, entries) => {
+      if (err) {
+        res.status(400).send({ error: "Error deleting journal entries", err });
+      } else if (entries.result.n === 0) {
+        res.status(404).send({ message: "No journal entries to delete" });
+      } else {
+        res.status(200).send({ message: "Journal entries deleted" });
       }
     });
   },
