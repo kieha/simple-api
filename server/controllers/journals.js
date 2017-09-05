@@ -25,7 +25,7 @@ module.exports = {
     });
   },
 
-  all: (req, res) => {
+  getAll: (req, res) => {
     Journal.find({}, (err, entries) => {
       if (err) {
         res.status(400).send({ error: "Error fetching journal entries", err });
@@ -37,7 +37,7 @@ module.exports = {
     });
   },
 
-  delete: (req, res) => {
+  deleteAll: (req, res) => {
     Journal.remove({}, (err, entries) => {
       if (err) {
         res.status(400).send({ error: "Error deleting journal entries", err });
@@ -49,7 +49,7 @@ module.exports = {
     });
   },
 
-  find: (req, res) => {
+  findOne: (req, res) => {
     Journal.findById(req.params.id, (err, entry) => {
       if (err) {
         res.status(400).send({ error: "Error retrieving journal entry", err });
@@ -61,7 +61,7 @@ module.exports = {
     });
   },
 
-  update: (req, res) => {
+  updateOne: (req, res) => {
     Journal.findById(req.params.id, (err, entry) => {
       if (err) {
         res.status(400).send({ error: "Error locating journal entry", err });
