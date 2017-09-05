@@ -1,8 +1,10 @@
 const Journals = require("../controllers/journals");
 
 module.exports = (router) => {
+  router.route("/journals/new")
+    .post(Journals.create);
+
   router.route("/journals")
-    .post(Journals.create)
     .get(Journals.getAll)
     .delete(Journals.deleteAll);
 
