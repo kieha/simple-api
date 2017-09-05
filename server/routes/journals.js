@@ -5,4 +5,9 @@ module.exports = (router) => {
     .post(Journals.create)
     .get(Journals.all)
     .delete(Journals.delete);
+
+  router.route("/journals/:id")
+    .get(Journals.find)
+    .put(Journals.update)
+    .delete(Journals.deleteOne);
 };
