@@ -15,6 +15,7 @@ if (env === "test") {
   port = 5000;
 }
 
+mongoose.Promise = global.Promise;
 
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -25,12 +26,14 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-mongoose.connect("mongodb://localhost:27017/journalApp", (err) => {
-  if (err) {
-    console.log("An error occured while connecting to the database:", err.message);
-  } else {
-    console.log("Database connection successful");
-  }
+const mongoConnection = mongoose.connect("mongodb://localhost:27017/journalApp", {
+  useMongoClient: true,
+});
+
+mongoConnection.then(() => {
+  console.log("Database connection successful");
+}, (err) => {
+  console.log("An error occured while connecting to the database:", err.message);
 });
 
 app.listen(port, (err) => {
