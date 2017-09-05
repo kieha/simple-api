@@ -101,7 +101,7 @@ module.exports = {
         res.status(400).send({ error: "Error locating journal entry:", err });
         return;
       } else if (entry === null) {
-        res.status(404).send({ error: "Journal entry not found" });
+        res.status(404).send({ message: "Journal entry not found" });
         return;
       }
       entry.remove((error) => {
