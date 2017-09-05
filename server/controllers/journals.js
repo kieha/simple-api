@@ -65,10 +65,13 @@ module.exports = {
     Journal.findById(req.params.id, (err, entry) => {
       if (err) {
         res.status(400).send({ error: "Error locating journal entry", err });
+        return;
       } else if (entry === null) {
         res.status(404).send({ message: "Journal entry not found" });
+        return;
       } else if (Object.keys(req.body).length === 0) {
         res.status(400).send({ error: "Nothing to update." });
+        return;
       }
 
       Object.keys(req.body).forEach((key) => {
@@ -95,7 +98,8 @@ module.exports = {
   deleteOne: (req, res) => {
     Journal.findById(req.params.id, (err, entry) => {
       if (err) {
-        res.status(400).send({ error: "Error locating journal entry:".err });
+        res.status(400).send({ error: "Error locating journal entry:", err });
+        return;
       } else if (entry === null) {
         res.status(404).send({ error: "Journal entry not found" });
         return;
@@ -104,7 +108,7 @@ module.exports = {
         if (error) {
           res.status(400).send({ error: `Error deleting journal entries: ${error}` });
         } else {
-          res.status(200).send({ message: "Journal entries deleted" });
+          res.status(200).send({ message: "Journal entry deleted" });
         }
       });
     });
