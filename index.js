@@ -11,8 +11,11 @@ const apiRouter = express.Router();
 
 const env = process.env.NODE_ENV;
 let port = 8080;
+let db = "mongodb://localhost:27017/journalApp";
+
 if (env === "test") {
   port = 5000;
+  db = "mongodb://localhost:27017/journalApp-test";
 }
 
 mongoose.Promise = global.Promise;
@@ -26,7 +29,7 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-const mongoConnection = mongoose.connect("mongodb://localhost:27017/journalApp", {
+const mongoConnection = mongoose.connect(db, {
   useMongoClient: true,
 });
 
