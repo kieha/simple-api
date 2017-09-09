@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+
 const describe = require("mocha").describe;
 const it = require("mocha").it;
 const expect = require("chai").expect;
@@ -7,6 +9,28 @@ const Journal = require("../server/models/journal");
 const request = require("supertest")(app);
 
 describe("Journal", () => {
+  let journalId;
+
+  it("should delete all journal entries", (done) => {
+    request
+      .delete("/api/journals")
+      .end((err, res) => {
+        expect(res.status).to.equal(200);
+        expect(res.body.message).to.equal("Journal entries deleted");
+        done();
+      });
+  });
+
+  it("should throw an error if there are no journal entries to delete", (done) => {
+    request
+      .delete("/api/journals")
+      .end((err, res) => {
+        expect(res.status).to.equal(404);
+        expect(res.body.message).to.equal("No journal entries to delete");
+        done();
+      });
+  });
+
   it("should throw an error if there are no journal entries to retrieve", (done) => {
     request
       .get("/api/journals")
@@ -25,6 +49,7 @@ describe("Journal", () => {
         entry: "Journal entry number 1",
       })
       .end((err, res) => {
+        journalId = res.body.journal._id;
         expect(res.status).to.equal(201);
         expect(res.body.message).to.equal("Journal entry saved successfully");
         expect(res.body.journal).to.be.a("object");
@@ -58,6 +83,36 @@ describe("Journal", () => {
       .end((err, res) => {
         expect(res.status).to.equal(200);
         expect(res.body).to.be.a("array");
+        done();
+      });
+  });
+
+  it("should retrieve journal entries by id", (done) => {
+    request
+      .get(`/api/journals/${journalId}`)
+      .end((err, res) => {
+        expect(res.status).to.equal(200);
+        expect(res.body).to.be.a("object");
+        done();
+      });
+  });
+
+  it("should thow an error if journal entry is not found", (done) => {
+    request
+      .get("/api/journals/9e799c0e692b79bdc83f082a")
+      .end((err, res) => {
+        expect(res.status).to.equal(404);
+        expect(res.body.message).to.equal("Journal entry not found");
+        done();
+      });
+  });
+
+  it("should thow an error if an error occurs", (done) => {
+    request
+      .get("/api/journals/9e799c0e692b79bdc83f0")
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
+        expect(res.body.error).to.equal("Error retrieving journal entry");
         done();
       });
   });
