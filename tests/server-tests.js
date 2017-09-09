@@ -127,6 +127,16 @@ describe("Journal", () => {
       });
   });
 
+  it("should delete a journal entry by id", (done) => {
+    request
+      .delete(`/api/journals/${journalId}`)
+      .end((err, res) => {
+        expect(res.status).to.equal(200);
+        expect(res.body.message).to.equal("Journal entry deleted");
+        done();
+      });
+  });
+
   it("should delete all journal entries", (done) => {
     request
       .delete("/api/journals")
