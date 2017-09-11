@@ -10,7 +10,7 @@ const app = express();
 const apiRouter = express.Router();
 
 const env = process.env.NODE_ENV;
-let port = 8080;
+let port = 3000;
 let db = "mongodb://localhost:27017/journalApp";
 
 if (env === "test") {
