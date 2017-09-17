@@ -30,7 +30,7 @@ module.exports = {
       if (err) {
         res.status(400).send({ error: "Error fetching journal entries", err });
       } else if (entries.length === 0) {
-        res.status(404).send({ message: "No journal entries to retrieve" });
+        res.status(200).send({ message: "No journal entries to retrieve" });
       } else {
         res.status(200).send(entries);
       }
@@ -42,7 +42,7 @@ module.exports = {
       if (err) {
         res.status(400).send({ error: "Error deleting journal entries", err });
       } else if (entries.result.n === 0) {
-        res.status(404).send({ message: "No journal entries to delete" });
+        res.status(200).send({ message: "No journal entries to delete" });
       } else {
         res.status(200).send({ message: "Journal entries deleted" });
       }
@@ -54,7 +54,7 @@ module.exports = {
       if (err) {
         res.status(400).send({ error: "Error retrieving journal entry", err });
       } else if (entry === null) {
-        res.status(404).send({ message: "Journal entry not found" });
+        res.status(404).send({ error: "Journal entry not found" });
       } else {
         res.status(200).send(entry);
       }
@@ -67,7 +67,7 @@ module.exports = {
         res.status(400).send({ error: "Error locating journal entry", err });
         return;
       } else if (entry === null) {
-        res.status(404).send({ message: "Journal entry not found" });
+        res.status(404).send({ error: "Journal entry not found" });
         return;
       } else if (Object.keys(req.body).length === 0) {
         res.status(400).send({ error: "Nothing to update." });
@@ -101,7 +101,7 @@ module.exports = {
         res.status(400).send({ error: "Error locating journal entry:", err });
         return;
       } else if (entry === null) {
-        res.status(404).send({ message: "Journal entry not found" });
+        res.status(404).send({ error: "Journal entry not found" });
         return;
       }
       entry.remove((error) => {
