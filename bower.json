@@ -1,0 +1,21 @@
+{
+  "name": "simple-api",
+  "description": "Simple API",
+  "main": "index.js",
+  "authors": [
+    "Njeri Kieha"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/kieha/simple-api",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "sweetalert2": "^6.9.0"
+  }
+}
