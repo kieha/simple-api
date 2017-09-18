@@ -6,18 +6,37 @@ import React, { Component } from "react";
 import request from "superagent";
 import Moment from "react-moment";
 
+const styles = {
+  buttonStyles: {
+    color: "#6495ed",
+    textDecoration: "dashed underline",
+    fontSize: "1.75em",
+    background: "none",
+    border: "none",
+    outline: "none",
+    cursor: "pointer",
+    marginBottom: 10,
+  },
+};
+
 class App extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
+      editing: undefined,
       title: "",
       entry: "",
+      editedTitle: "",
       journalEntries: [],
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.editField = this.editField.bind(this);
+    this.handleEditField = this.handleEditField.bind(this);
+    this.stopEditing = this.stopEditing.bind(this);
+    this.editTitle = this.editTitle.bind(this);
   }
 
   componentDidMount() {
@@ -81,12 +100,106 @@ class App extends Component {
       });
   }
 
+  editTitle(entryId) {
+    request
+      .put(`http://localhost:3000/api/journals/${entryId}`)
+      .send({
+        title: this.state.editedTitle,
+      })
+      .end((err, res) => {
+        if (res.body.error) {
+          swal({
+            title: "Error",
+            text: res.body.error,
+            type: "error",
+          });
+        } else {
+          swal({
+            title: "Success",
+            text: res.body.message,
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: false,
+          });
+          this.setState({
+            editing: undefined,
+          });
+          this.fetchEntries();
+        }
+      });
+  }
+
+  editField(entryId) {
+    this.setState({
+      editing: entryId,
+    });
+  }
+
+  handleEditField() {
+    const name = this.input.name;
+    const value = this.input.value;
+    this.setState({
+      [name]: value,
+    });
+  }
+
+  stopEditing() {
+    this.setState({
+      editing: undefined,
+    });
+  }
+
+  renderTitle(title, entryId) {
+    return this.state.editing === entryId ?
+      <div className="row editable-title">
+        <div className="input-group" style={{ margin: "auto", marginBottom: 19, maxWidth: "fit-content" }}>
+          <input
+            style={{ borderRadius: 2 }}
+            type="text"
+            className="form-control"
+            placeholder="Edit Title"
+            ref={(input) => { this.input = input; }}
+            name="editedTitle"
+            defaultValue={title}
+            onChange={this.handleEditField}
+          />
+          <span className="input-group-btn" style={{ marginLeft: 12 }}>
+            <button
+              className="btn btn-primary"
+              style={{ border: "1px solid transparent", borderRadius: 2 }}
+              type="button"
+              onClick={() => this.editTitle(entryId)}
+            >
+              <i className="fa fa-check" aria-hidden="true" />
+            </button>
+          </span>
+          <span className="input-group-btn" style={{ marginLeft: 12 }}>
+            <button
+              className="btn btn-secondary"
+              style={{ border: "1px solid transparent", borderRadius: 2 }}
+              type="button"
+              onClick={this.stopEditing}
+            >
+              <i className="fa fa-times" aria-hidden="true" />
+            </button>
+          </span>
+        </div>
+      </div>
+    :
+      <button
+        style={styles.buttonStyles}
+        onClick={() => this.editField(entryId)}
+      >
+        {title}
+      </button>;
+  }
+
   renderJournalList() {
     return this.state.journalEntries.length ?
       this.state.journalEntries.map(entry => (
         <div className="list-group" key={entry._id} style={{ marginTop: 20, marginBottom: 20 }}>
           <div className="list-group-item flex-column align-items-start" style={{ textAlign: "center", justifyContent: "center" }}>
-            <h3>{entry.title}</h3>
+            {this.renderTitle(entry.title, entry._id)}
             <h6>Created at: {<Moment format="HH:mm DD/MM/YYYY">{entry.createdAt}</Moment>}</h6>
             <p>{entry.entry}</p>
           </div>
