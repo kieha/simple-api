@@ -149,6 +149,54 @@ class App extends Component {
     });
   }
 
+  deleteEntry(entryId) {
+    swal({
+      type: "warning",
+      text: "Are you sure you want to delete this entry?",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete",
+      cancelButtonText: "No, cancel",
+      allowOutsideClick: false,
+      cancelButtonColor: "#d33",
+    }).then(() => {
+      request
+        .delete(`http://localhost:3000/api/journals/${entryId}`)
+        .end((err, res) => {
+          if (res.body.error) {
+            swal({
+              title: "Error",
+              text: res.body.error,
+              type: "error",
+            });
+          } else {
+            swal({
+              title: "Success",
+              text: res.body.message,
+              type: "success",
+              confirmButtonText: "OK",
+              allowOutsideClick: false,
+            });
+            this.fetchEntries();
+          }
+        });
+    }).catch(swal.noop);
+  }
+
+  renderDelete(entryId) {
+    return (
+      <div className="delete-entry" style={{ position: "absolute" }}>
+        <button
+          className="btn btn-danger"
+          style={{ border: "1px solid transparent", borderRadius: 2 }}
+          type="button"
+          onClick={() => this.deleteEntry(entryId)}
+        >
+          Delete Entry
+        </button>
+      </div>
+    );
+  }
+
   renderTitle(title, entryId) {
     return this.state.editing === entryId ?
       <div className="row editable-title">
@@ -199,6 +247,7 @@ class App extends Component {
       this.state.journalEntries.map(entry => (
         <div className="list-group" key={entry._id} style={{ marginTop: 20, marginBottom: 20 }}>
           <div className="list-group-item flex-column align-items-start" style={{ textAlign: "center", justifyContent: "center" }}>
+            {this.renderDelete(entry._id)}
             {this.renderTitle(entry.title, entry._id)}
             <h6>Created at: {<Moment format="HH:mm DD/MM/YYYY">{entry.createdAt}</Moment>}</h6>
             <p>{entry.entry}</p>
