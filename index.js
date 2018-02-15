@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 
 const express = require("express");
+const cors = require("cors");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
@@ -20,6 +21,7 @@ if (env === "test") {
 
 mongoose.Promise = global.Promise;
 
+app.use(cors());
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

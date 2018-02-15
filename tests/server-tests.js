@@ -85,7 +85,7 @@ describe("Journal", () => {
       .get("/api/journals/9e799c0e692b79bdc83f082a")
       .end((err, res) => {
         expect(res.status).to.equal(404);
-        expect(res.body.message).to.equal("Journal entry not found");
+        expect(res.body.error).to.equal("Journal entry not found");
         done();
       });
   });
@@ -151,7 +151,7 @@ describe("Journal", () => {
     request
       .delete("/api/journals")
       .end((err, res) => {
-        expect(res.status).to.equal(404);
+        expect(res.status).to.equal(200);
         expect(res.body.message).to.equal("No journal entries to delete");
         done();
       });
@@ -161,7 +161,7 @@ describe("Journal", () => {
     request
       .get("/api/journals")
       .end((err, res) => {
-        expect(res.status).to.equal(404);
+        expect(res.status).to.equal(200);
         expect(res.body.message).to.equal("No journal entries to retrieve");
         done();
       });
