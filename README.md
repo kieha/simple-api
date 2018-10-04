@@ -1,2 +1,15 @@
 # simple-api
+
 Simple Node.js API
+
+## Installation
+
+-   Clone this repo
+
+-   cd `path/to/this/repo`
+
+-   run `npm install` to install the project's dependencies
+
+-   run `npm start` to start the server. If you don't have `nodemon` installed, run `node index.js` instead
+
+-   run `npm run start-client` to start the client app
