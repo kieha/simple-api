@@ -1,4 +1,4 @@
-const journals = require("./journals");
+import journals from './journals';
 
 module.exports = (apiRouter) => {
   journals(apiRouter);
