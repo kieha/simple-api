@@ -1,6 +1,6 @@
-# simple-api
+# journal-app-bend
 
-Simple Node.js API
+Journal App API
 
 ## Installation
 
@@ -11,5 +11,3 @@ Simple Node.js API
 -   run `npm install` to install the project's dependencies
 
 -   run `npm start` to start the server. If you don't have `nodemon` installed, run `node index.js` instead
-
--   run `npm run start-client` to start the client app
