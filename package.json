@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "rimraf dist/ && babel ./ --out-dir dist/ --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files",
-    "start": "yarn run build && nodemon dist/index.js",
+    "start": "nodemon dist/index.js",
     "test": "NODE_ENV='test' mocha tests/server-tests.js --require babel-core/register"
   },
   "repository": {
