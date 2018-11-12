@@ -2453,6 +2453,11 @@ js-yaml@^3.5.1:
     argparse "^1.0.7"
     esprima "^4.0.0"
 
+jsend@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/jsend/-/jsend-1.0.2.tgz#95df7d46fbccf1f2e95674348f9477e935a6c9a5"
+  integrity sha1-ld99RvvM8fLpVnQ0j5R36TWmyaU=
+
 jsesc@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/jsesc/-/jsesc-1.3.0.tgz#46c3fec8c1892b12b0833db9bc7622176dbab34b"

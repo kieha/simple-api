@@ -81,15 +81,18 @@ module.exports = {
       entry.save((error) => {
         if (error) {
           if (error.code === 11000 || error.code === 11001) {
-            res.status(409).send({ error: 'Journal entry with this title already exists.' });
+            res.jsend.error({
+              message: 'Journal entry with this title already exists.',
+              code: 409,
+            });
           } else {
-            res.status(400).send({ error: error.message });
+            res.jsend.error({
+              message: error.message,
+              code: 400,
+            });
           }
         } else {
-          res.status(200).send({
-            message: 'Journal entry updated successfully',
-            entry,
-          });
+          res.jsend.success({ entry });
         }
       });
     });

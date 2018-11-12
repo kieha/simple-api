@@ -4,6 +4,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
+import jsend from 'jsend';
 import routes from './server/routes';
 
 const app = express();
@@ -20,10 +21,12 @@ if (env === 'test') {
 
 mongoose.Promise = global.Promise;
 
+// app middleware
 app.use(cors());
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(jsend.middleware);
 app.use('/api', routes(apiRouter));
 
 app.get('/', (req, res) => {
